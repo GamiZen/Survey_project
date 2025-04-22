@@ -1,0 +1,30 @@
+name: 🚀 Deploy to VPS
+
+on:
+  push:
+    branches:
+      - main 
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📦 Checkout repo
+        uses: actions/checkout@v3
+
+      - name: 🔐 Setup SSH
+        uses: webfactory/ssh-agent@v0.8.1
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: 🚀 Deploy to VPS
+        run: |
+          ssh -o StrictHostKeyChecking=no root@95.216.141.223 << 'EOF'
+            cd /var/www/Survey_project
+            git pull origin main
+            npm install
+            npm run build
+            pm2 restart app || pm2 start npm --name "app" -- start
+            pm2 save
+          EOF
