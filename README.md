@@ -1,1 +1,1 @@
-Auto-deploy test
+Auto-deploy tests
