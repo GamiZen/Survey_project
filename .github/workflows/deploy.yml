@@ -3,7 +3,7 @@ name: 🚀 Deploy to VPS
 on:
   push:
     branches:
-      - main 
+      - main
 
 jobs:
   deploy:
@@ -18,15 +18,5 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: 🚀 Deploy to VPS
-        run: |
-          ssh -o StrictHostKeyChecking=no root@95.216.141.223 "bash -l -c '
-            cd /var/www/Survey_project &&
-            git pull &&
-            npm install &&
-            npm run build &&
-            pm2 restart app || pm2 start npm --name \"app\" -- start &&
-            pm2 save
-          '"
-
-
+      - name: 🚀 Run deploy script on VPS
+        run: ssh -o StrictHostKeyChecking=no root@95.216.141.223 "/root/deploy.sh"
