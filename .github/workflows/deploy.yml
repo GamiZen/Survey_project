@@ -20,11 +20,14 @@ jobs:
 
       - name: 🚀 Deploy to VPS
         run: |
-          ssh -o StrictHostKeyChecking=no root@95.216.141.223 << 'EOF'
-            cd /var/www/Survey_project
-            git pull origin main
-            npm install
-            npm run build
-            pm2 restart app || pm2 start npm --name "app" -- start
-            pm2 save
+          ssh -o StrictHostKeyChecking=no root@YOUR_IP << 'EOF'
+            bash -l -c '
+              cd /var/www/Survey_project &&
+              git pull &&
+              npm install &&
+              npm run build &&
+              pm2 restart app || pm2 start npm --name "app" -- start &&
+              pm2 save
+            '
           EOF
+
