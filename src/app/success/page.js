@@ -1,0 +1,107 @@
+"use client";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useProgress } from "../Components/ProgressContext";
+import ProgressBar from "../Components/ProgressBar";
+
+export default function SuccessPage() {
+  const { setProgress } = useProgress();
+  const [isEntering, setIsEntering] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    setProgress(100);
+    setTimeout(() => {
+      setIsEntering(true);
+    }, 100);
+  }, [setProgress]);
+
+  const handleSubmit = async () => {
+    // Surinkti duomenis iš localStorage
+    const income = localStorage.getItem("income");
+    const employment = localStorage.getItem("employment");
+    const phone = localStorage.getItem("phone");
+
+    const data = {
+      income,
+      employment,
+      phone,
+    };
+
+    try {
+      const res = await fetch("/api/survey", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (res.ok) {
+        alert("Survey submitted successfully!");
+        // Galima valyti localStorage, jei reikia
+        //localStorage.removeItem("income");
+        //localStorage.removeItem("employment");
+        //localStorage.removeItem("phone");
+      } else {
+        alert("Something went wrong.");
+      }
+    } catch (err) {
+      console.error("Submit error:", err);
+      alert("Network error while submitting survey.");
+    }
+  };
+
+
+  return (
+    <div
+      className={`min-h-screen bg-[#F7F7F7] flex flex-col items-center justify-center px-4 py-10 transition-opacity duration-500 ${
+        isEntering ? "opacity-100" : "opacity-0"
+      }`}
+    >
+      <ProgressBar />
+
+      <div className="flex items-center justify-center mt-16">
+        <div className="w-32 h-32 rounded-full border-4 border-[#2E646A] flex items-center justify-center animate-bounce">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-16 w-16 text-[#2E646A]"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M5 13l4 4L19 7"
+            />
+          </svg>
+        </div>
+      </div>
+
+      <h2 className="text-3xl md:text-5xl font-semibold text-[#2E646A] text-center mt-8">
+        Thanks for completing the survey!
+      </h2>
+
+{/* Buttons Container */}
+<div className="flex space-x-4 mt-10">
+  {/* Back Button */}
+  <button
+    onClick={() => router.back()}
+    className="w-40 px-10 py-3 rounded-xl text-[#2E646A] border border-[#2E646A] text-2xl font-semibold hover:bg-[#2E646A] hover:text-white transition"
+  >
+    Back
+  </button>
+
+  {/* Submit Button */}
+  <button
+    onClick={handleSubmit}
+    className="w-40 px-10 py-3 rounded-xl bg-[#2E646A] text-white text-2xl font-semibold hover:bg-[#1f4a4e] transition"
+  >
+    Submit
+  </button>
+</div>
+    </div>
+  );
+}
