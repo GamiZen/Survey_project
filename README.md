@@ -38,7 +38,7 @@ https://survey-project.duckdns.org
 
 ---
 
-## 🧪 Technologies Used
+## Technologies Used
 
 | Area         | Tech                            |
 |--------------|---------------------------------|
