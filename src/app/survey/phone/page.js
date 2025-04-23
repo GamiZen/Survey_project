@@ -19,8 +19,8 @@ export default function PhonePage() {
   }, []);
   
   useEffect(() => {
-    // Išsaugoti tik validų numerį
-    if (phoneNumber && isValid) {
+    const numeric = phoneNumber.replace(/\D/g, "");
+    if (numeric && isValid) {
       localStorage.setItem("phone", phoneNumber);
     }
   }, [phoneNumber, isValid]);
@@ -50,16 +50,27 @@ export default function PhonePage() {
   };
 
   const handleInputChange = (e) => {
-    const input = e.target.value;
-
-    // Leisti tik skaičius ir pašalinti kitus simbolius
-    const numericInput = input.replace(/\D/g, "");
-
-    // Patikrinti, ar telefono numeris yra galiojantis JAV numeris
-    const isValidUSNumber = /^[2-9]\d{2}[2-9]\d{2}\d{4}$/.test(numericInput);
-
-    setPhoneNumber(numericInput);
-    setIsValid(isValidUSNumber || numericInput === ""); // Tuščias laukas taip pat laikomas validžiu
+    let input = e.target.value.replace(/\D/g, ""); // pašalinam visus ne skaičius
+  
+    if (input.length > 10) {
+      input = input.slice(0, 10); // apribojam iki 10 skaičių
+    }
+  
+    let formatted = input;
+  
+    if (input.length > 6) {
+      formatted = `(${input.slice(0, 3)}) ${input.slice(3, 6)}-${input.slice(6)}`;
+    } else if (input.length > 3) {
+      formatted = `(${input.slice(0, 3)}) ${input.slice(3)}`;
+    } else if (input.length > 0) {
+      formatted = `(${input}`;
+    }
+  
+    setPhoneNumber(formatted);
+  
+    const numeric = input;
+    const isValidUSNumber = /^[2-9]\d{2}[2-9]\d{2}\d{4}$/.test(numeric);
+    setIsValid(isValidUSNumber || input === "");
   };
 
   const handleBlur = () => {
