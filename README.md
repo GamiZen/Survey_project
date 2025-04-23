@@ -113,7 +113,7 @@ During development and deployment, the project was tested using:
 
 ## Optional Tasks Completed
 
-Optional Task	Status
+Optional Task	Status:
 Free domain with SSL	✅
 Redirect /google	✅
 GitHub repo setup	✅
