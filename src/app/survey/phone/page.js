@@ -1,4 +1,5 @@
 "use client";
+
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -9,15 +10,17 @@ export default function PhonePage() {
   const { setProgress, setIsAnimating } = useProgress();
   const [phoneNumber, setPhoneNumber] = useState("");
   const [isExiting, setIsExiting] = useState(false);
-  const [isValid, setIsValid] = useState(true); // Būsena validacijai
-  const [isFocused, setIsFocused] = useState(false); // Būsena, ar įvesties laukas yra aktyvus
+  const [isValid, setIsValid] = useState(true);
+  const [isFocused, setIsFocused] = useState(false);
   const router = useRouter();
 
+  // Load saved phone number from localStorage
   useEffect(() => {
     const saved = localStorage.getItem("phone");
     if (saved) setPhoneNumber(saved);
   }, []);
-  
+
+  // Save valid phone to localStorage
   useEffect(() => {
     const numeric = phoneNumber.replace(/\D/g, "");
     if (numeric && isValid) {
@@ -37,27 +40,23 @@ export default function PhonePage() {
   };
 
   const handleBack = () => {
-    // Pašalinti numerį iš localStorage, jei jis neteisingas
     if (!isValid) {
       localStorage.removeItem("phone");
     }
     router.back();
   };
-  
+
   const handleExitComplete = () => {
     setIsAnimating(false);
     router.push("/success");
   };
 
+  // Handle phone input formatting and validation
   const handleInputChange = (e) => {
-    let input = e.target.value.replace(/\D/g, ""); // pašalinam visus ne skaičius
-  
-    if (input.length > 10) {
-      input = input.slice(0, 10); // apribojam iki 10 skaičių
-    }
-  
+    let input = e.target.value.replace(/\D/g, "");
+    if (input.length > 10) input = input.slice(0, 10);
+
     let formatted = input;
-  
     if (input.length > 6) {
       formatted = `(${input.slice(0, 3)}) ${input.slice(3, 6)}-${input.slice(6)}`;
     } else if (input.length > 3) {
@@ -65,16 +64,14 @@ export default function PhonePage() {
     } else if (input.length > 0) {
       formatted = `(${input}`;
     }
-  
+
     setPhoneNumber(formatted);
-  
-    const numeric = input;
-    const isValidUSNumber = /^[2-9]\d{2}[2-9]\d{2}\d{4}$/.test(numeric);
+
+    const isValidUSNumber = /^[2-9]\d{2}[2-9]\d{2}\d{4}$/.test(input);
     setIsValid(isValidUSNumber || input === "");
   };
 
   const handleBlur = () => {
-    // Pašalinti numerį iš localStorage, jei jis neteisingas
     if (!isValid) {
       localStorage.removeItem("phone");
     }
@@ -97,8 +94,8 @@ export default function PhonePage() {
             Enter your US phone number
           </h2>
 
+          {/* Styled phone input with floating label */}
           <div className="w-full max-w-md relative">
-            {/* Label for animated placeholder */}
             <label
               className={`absolute left-4 transition-all duration-300 bg-[#F7F7F7] px-1 ${
                 isFocused || phoneNumber ? "text-sm top-[-10px] z-10" : "text-lg top-3"
@@ -128,6 +125,7 @@ export default function PhonePage() {
             )}
           </div>
 
+          {/* Navigation buttons */}
           <div className="flex space-x-4 mt-12">
             <button
               onClick={handleBack}

@@ -143,3 +143,11 @@ Save user progress with cookies/storage	✅
 Created by Gabrielius
 As part of a technical assessment challenge.
 Thank you for reviewing this project!
+
+---
+
+## 🎨 Figma Design
+
+This project was initially planned and designed in [Figma](https://www.figma.com/design/qsA63h362XvzsMWFzR2oRD/Survey_project?node-id=0-1&t=Hlgs6kyTnsFm46ws-1).
+
+> **Note:** During development, some UI decisions and interactions were adjusted or improved based on usability, performance, or time constraints. As a result, the final implementation may differ slightly from the original mockups.

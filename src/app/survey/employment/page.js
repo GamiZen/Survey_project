@@ -1,4 +1,5 @@
-"use client";
+"use client"; // Required for client-side state and effects
+
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useProgress } from "../../Components/ProgressContext";
@@ -11,30 +12,32 @@ export default function EmploymentPage() {
   const [isExiting, setIsExiting] = useState(false);
   const router = useRouter();
 
-  
+  // Restore saved employment selection from localStorage
   useEffect(() => {
     const saved = localStorage.getItem("employment");
     if (saved) setSelected(saved);
   }, []);
-  
+
+  // Save to localStorage when selection changes
   useEffect(() => {
     if (selected) {
       localStorage.setItem("employment", selected);
     }
   }, [selected]);
 
+  // Set progress bar to 33%
   useEffect(() => {
     setProgress(33);
   }, [setProgress]);
 
   const handleNext = () => {
     if (selected) {
-      setIsExiting(true);
+      setIsExiting(true); // Trigger exit animation
     }
   };
 
   const handleExitComplete = () => {
-    router.push("/survey/phone");
+    router.push("/survey/phone"); // Navigate after animation completes
   };
 
   const options = [
@@ -57,16 +60,15 @@ export default function EmploymentPage() {
           className="min-h-screen bg-[#F7F7F7] flex flex-col items-center justify-center px-4 py-10"
         >
           <ProgressBar />
+
           <h2 className="text-3xl md:text-5xl font-semibold text-[#2E646A] text-center mb-8">
             What is your employment status?
           </h2>
 
+          {/* Radio options */}
           <div className="space-y-6 w-full max-w-md">
             {options.map((option, index) => (
-              <label
-                key={index}
-                className="flex items-center space-x-3 cursor-pointer group"
-              >
+              <label key={index} className="flex items-center space-x-3 cursor-pointer group">
                 <input
                   type="radio"
                   name="employment"
@@ -82,6 +84,7 @@ export default function EmploymentPage() {
             ))}
           </div>
 
+          {/* Navigation buttons */}
           <div className="flex space-x-4 mt-12">
             <button
               onClick={() => router.back()}

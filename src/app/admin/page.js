@@ -1,23 +1,20 @@
-"use client";
+"use client"; // Enables client-side rendering
 import { useEffect, useState } from "react";
 import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
+  BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer
 } from "recharts";
 
+// Admin dashboard page to view, filter, and export survey responses
 export default function AdminPage() {
   const [data, setData] = useState([]);
-  const [input, setInput] = useState("");
-  const [authorized, setAuthorized] = useState(false);
+  const [input, setInput] = useState(""); // Admin password input
+  const [authorized, setAuthorized] = useState(false); // Auth state
   const [incomeFilter, setIncomeFilter] = useState("All");
   const [employmentFilter, setEmploymentFilter] = useState("All");
 
   const correctPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || "admin";
 
+  // Fetch survey data if authorized
   useEffect(() => {
     if (authorized) {
       fetch("/api/survey")
@@ -27,6 +24,7 @@ export default function AdminPage() {
     }
   }, [authorized]);
 
+  // Show login screen if not authorized
   if (!authorized) {
     return (
       <div className="min-h-screen bg-[#F7F7F7] flex flex-col items-center justify-center px-4">
@@ -50,6 +48,7 @@ export default function AdminPage() {
     );
   }
 
+  // Apply filters
   const filteredData = data.filter((entry) => {
     return (
       (incomeFilter === "All" || entry.income === incomeFilter) &&
@@ -57,6 +56,7 @@ export default function AdminPage() {
     );
   });
 
+  // Prepare data for income chart
   const incomeStats = {};
   filteredData.forEach(({ income }) => {
     incomeStats[income] = (incomeStats[income] || 0) + 1;
@@ -70,10 +70,11 @@ export default function AdminPage() {
     <div className="min-h-screen bg-[#F7F7F7] p-10 text-[#2E646A]">
       <h1 className="text-4xl font-bold mb-6 text-center">Survey Responses</h1>
 
-      {/* Filtrai + Eksportas */}
+      {/* Export to CSV & filters */}
       <div className="flex flex-wrap gap-4 mb-6">
         <button
           onClick={() => {
+            // Generate CSV content
             const rows = [["Income", "Employment", "Phone", "Timestamp"]];
             filteredData.forEach((e) => {
               rows.push([e.income, e.employment, e.phone, e.timestamp]);
@@ -90,6 +91,7 @@ export default function AdminPage() {
           Export CSV
         </button>
 
+        {/* Income filter dropdown */}
         <select
           value={incomeFilter}
           onChange={(e) => setIncomeFilter(e.target.value)}
@@ -103,6 +105,7 @@ export default function AdminPage() {
           <option>&gt;$80,000</option>
         </select>
 
+        {/* Employment filter dropdown */}
         <select
           value={employmentFilter}
           onChange={(e) => setEmploymentFilter(e.target.value)}
@@ -117,7 +120,7 @@ export default function AdminPage() {
         </select>
       </div>
 
-      {/* Diagrama */}
+      {/* Income chart */}
       <h3 className="text-2xl font-semibold my-6">Income Distribution</h3>
       <ResponsiveContainer width="100%" height={300}>
         <BarChart data={chartData}>
@@ -128,7 +131,7 @@ export default function AdminPage() {
         </BarChart>
       </ResponsiveContainer>
 
-      {/* Lentelė */}
+      {/* Data table */}
       <div className="overflow-x-auto mt-10">
         <table className="w-full text-left border-collapse border border-gray-300 bg-white">
           <thead>

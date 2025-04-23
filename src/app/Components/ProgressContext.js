@@ -1,27 +1,28 @@
-"use client";
+"use client"; // Required for using React hooks in context
 
 import { createContext, useContext, useState } from "react";
 
+// Create a context to manage survey progress
 const ProgressContext = createContext();
 
+// Context provider to wrap around components that need progress state
 export function ProgressProvider({ children }) {
-  const [progress, setProgress] = useState(0);
-  const [isAnimating, setIsAnimating] = useState(false); // Pridėta būsena
+  const [progress, setProgress] = useState(0); // Completion % (0-100)
+  const [isAnimating, setIsAnimating] = useState(false); // Optional animation state
 
   return (
-    <ProgressContext.Provider
-      value={{ progress, setProgress, isAnimating, setIsAnimating }} // Pridėta reikšmė
-    >
+    <ProgressContext.Provider value={{ progress, setProgress, isAnimating, setIsAnimating }}>
       {children}
     </ProgressContext.Provider>
   );
 }
 
+// Custom hook to access progress state
 export function useProgress() {
   return useContext(ProgressContext);
 }
 
-// Jei reikia, galite palikti ProgressBar kaip papildomą komponentą
+// Optional reusable top sticky progress bar component (not used if custom one is imported separately)
 export function ProgressBar() {
   const { progress } = useProgress();
 

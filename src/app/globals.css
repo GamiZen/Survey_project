@@ -1,17 +1,21 @@
+/* Import Tailwind base styles */
 @import "tailwindcss";
 
+/* Define default light theme colors */
 :root {
   --background: #ffffff;
   --foreground: #171717;
 }
 
+/* Custom inline theme variables (optional, may be used with custom theming systems) */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-geist-sans);   /* Optional font variables */
   --font-mono: var(--font-geist-mono);
 }
 
+/* Dark mode overrides for system preferences */
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
@@ -19,12 +23,14 @@
   }
 }
 
+/* Base body styles */
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Generic progress bar container */
 .progress-bar {
   width: 100%;
   height: 4px;
@@ -33,48 +39,55 @@ body {
   overflow: hidden;
 }
 
+/* Animated progress bar fill */
 .progress-fill {
   height: 100%;
   background-color: #2e646a;
   transition: width 0.5s ease-in-out;
 }
 
+/* === Custom Radio Button Styling === */
+
+/* Remove default radio styles and define size/shape */
 input[type="radio"] {
-  appearance: none; /* Pašalina naršyklės numatytuosius stilius */
-  width: 1.5rem; /* Nustato išorinio apskritimo plotį */
-  height: 1.5rem; /* Nustato išorinio apskritimo aukštį */
-  border: 2px solid #2E646A; /* Išorinio apskritimo rėmelio spalva */
-  border-radius: 50%; /* Apskritimo forma */
+  appearance: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 2px solid #2E646A;
+  border-radius: 50%;
   display: inline-block;
   position: relative;
   outline: none;
   cursor: pointer;
 }
 
+/* Outer border on selected radio button */
 input[type="radio"]:checked {
-  border-color: #2E646A; /* Išorinio apskritimo rėmelio spalva */
+  border-color: #2E646A;
 }
 
+/* Inner white circle (background for checked state) */
 input[type="radio"]:checked::before {
   content: "";
   display: block;
-  width: 1rem; /* Vidinio apskritimo plotis */
-  height: 1rem; /* Vidinio apskritimo aukštis */
-  background-color: #FFFFFF; /* Tarpelio spalva (vidinis apskritimas) */
-  border-radius: 50%; /* Apskritimo forma */
+  width: 1rem;
+  height: 1rem;
+  background-color: #FFFFFF;
+  border-radius: 50%;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
+/* Inner colored dot for selected state */
 input[type="radio"]:checked::after {
   content: "";
   display: block;
-  width: 0.5rem; /* Užpildyto apskritimo plotis */
-  height: 0.5rem; /* Užpildyto apskritimo aukštis */
-  background-color: #2E646A; /* Užpildo spalva */
-  border-radius: 50%; /* Apskritimo forma */
+  width: 0.5rem;
+  height: 0.5rem;
+  background-color: #2E646A;
+  border-radius: 50%;
   position: absolute;
   top: 50%;
   left: 50%;

@@ -1,4 +1,5 @@
 "use client";
+
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -6,24 +7,25 @@ import { useProgress } from "../../Components/ProgressContext";
 import ProgressBar from "../../Components/ProgressBar";
 
 export default function IncomePage() {
-
-
   const { setProgress, setIsAnimating } = useProgress();
   const [selected, setSelected] = useState(null);
   const [isExiting, setIsExiting] = useState(false);
   const router = useRouter();
-  
+
+  // Restore previously selected income from localStorage
   useEffect(() => {
     const saved = localStorage.getItem("income");
     if (saved) setSelected(saved);
   }, []);
-  
+
+  // Save selected value to localStorage
   useEffect(() => {
     if (selected) {
       localStorage.setItem("income", selected);
     }
   }, [selected]);
 
+  // Initialize progress
   useEffect(() => {
     setProgress(0);
   }, [setProgress]);
@@ -65,6 +67,7 @@ export default function IncomePage() {
             What is your income range?
           </h2>
 
+          {/* Income options */}
           <div className="space-y-6 w-full max-w-md">
             {options.map((option, index) => (
               <label key={index} className="flex items-center space-x-3 cursor-pointer group">
@@ -83,6 +86,7 @@ export default function IncomePage() {
             ))}
           </div>
 
+          {/* Buttons */}
           <div className="flex space-x-4 mt-12">
             <button
               onClick={() => router.back()}
