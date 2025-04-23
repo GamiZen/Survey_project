@@ -1,10 +1,20 @@
 "use client";
 import { useEffect, useState } from "react";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 
 export default function AdminPage() {
   const [data, setData] = useState([]);
   const [input, setInput] = useState("");
   const [authorized, setAuthorized] = useState(false);
+  const [incomeFilter, setIncomeFilter] = useState("All");
+  const [employmentFilter, setEmploymentFilter] = useState("All");
 
   const correctPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || "admin";
 
@@ -40,10 +50,86 @@ export default function AdminPage() {
     );
   }
 
+  const filteredData = data.filter((entry) => {
+    return (
+      (incomeFilter === "All" || entry.income === incomeFilter) &&
+      (employmentFilter === "All" || entry.employment === employmentFilter)
+    );
+  });
+
+  const incomeStats = {};
+  filteredData.forEach(({ income }) => {
+    incomeStats[income] = (incomeStats[income] || 0) + 1;
+  });
+  const chartData = Object.entries(incomeStats).map(([label, value]) => ({
+    label,
+    value,
+  }));
+
   return (
     <div className="min-h-screen bg-[#F7F7F7] p-10 text-[#2E646A]">
       <h1 className="text-4xl font-bold mb-6 text-center">Survey Responses</h1>
-      <div className="overflow-x-auto">
+
+      {/* Filtrai + Eksportas */}
+      <div className="flex flex-wrap gap-4 mb-6">
+        <button
+          onClick={() => {
+            const rows = [["Income", "Employment", "Phone", "Timestamp"]];
+            filteredData.forEach((e) => {
+              rows.push([e.income, e.employment, e.phone, e.timestamp]);
+            });
+            const csv = rows.map((r) => r.join(",")).join("\n");
+            const blob = new Blob([csv], { type: "text/csv" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "survey_data.csv";
+            link.click();
+          }}
+          className="bg-[#2E646A] text-white px-4 py-2 rounded-md hover:bg-[#1f4a4e]"
+        >
+          Export CSV
+        </button>
+
+        <select
+          value={incomeFilter}
+          onChange={(e) => setIncomeFilter(e.target.value)}
+          className="border px-4 py-2 rounded-md"
+        >
+          <option>All</option>
+          <option>$0</option>
+          <option>&lt;$20,000</option>
+          <option>$20,000–$40,000</option>
+          <option>$40,000–$80,000</option>
+          <option>&gt;$80,000</option>
+        </select>
+
+        <select
+          value={employmentFilter}
+          onChange={(e) => setEmploymentFilter(e.target.value)}
+          className="border px-4 py-2 rounded-md"
+        >
+          <option>All</option>
+          <option>Full time</option>
+          <option>Part time</option>
+          <option>Self-employed</option>
+          <option>Retired</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      {/* Diagrama */}
+      <h3 className="text-2xl font-semibold my-6">Income Distribution</h3>
+      <ResponsiveContainer width="100%" height={300}>
+        <BarChart data={chartData}>
+          <XAxis dataKey="label" />
+          <YAxis allowDecimals={false} />
+          <Tooltip />
+          <Bar dataKey="value" fill="#2E646A" />
+        </BarChart>
+      </ResponsiveContainer>
+
+      {/* Lentelė */}
+      <div className="overflow-x-auto mt-10">
         <table className="w-full text-left border-collapse border border-gray-300 bg-white">
           <thead>
             <tr className="bg-[#2E646A] text-white">
@@ -54,7 +140,7 @@ export default function AdminPage() {
             </tr>
           </thead>
           <tbody>
-            {data.map((entry, index) => (
+            {filteredData.map((entry, index) => (
               <tr key={index} className="hover:bg-gray-100">
                 <td className="p-4 border border-gray-300">{entry.income}</td>
                 <td className="p-4 border border-gray-300">{entry.employment}</td>
