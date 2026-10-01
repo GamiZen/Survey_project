@@ -80,11 +80,11 @@ NEXT_PUBLIC_ADMIN_PASSWORD=admin
 
 This app is deployed to a remote VPS with:
 
-✅ Node.js + PM2 to keep the app running
+ Node.js + PM2 to keep the app running
 
-✅ Nginx as a reverse proxy (serves HTTPS with valid SSL)
+ Nginx as a reverse proxy (serves HTTPS with valid SSL)
 
-✅ GitHub Actions for auto-deployment:
+ GitHub Actions for auto-deployment:
 
     Pulls repo on push to main
 
@@ -97,44 +97,44 @@ This app is deployed to a remote VPS with:
 
 During development and deployment, the project was tested using:
 
-✅ Multiple browsers (Chrome, Firefox, Edge)
+ Multiple browsers (Chrome, Firefox, Edge)
 
-✅ Mobile and desktop screen sizes
+ Mobile and desktop screen sizes
 
-✅ Postman to test /api/survey
+ Postman to test /api/survey
 
-✅ curl for direct POST request testing
+ curl for direct POST request testing
 
-✅ SSH and PM2 for logs (pm2 logs app)
+ SSH and PM2 for logs (pm2 logs app)
 
-✅ Manually tested GitHub Action workflow
+ Manually tested GitHub Action workflow
 
 ---
 
 ## Optional Tasks Completed
 
 Optional Task	Status:
-Free domain with SSL	✅
-Redirect /google	✅
-GitHub repo setup	✅
-GitHub Actions deploy to VPS	✅
-Frontend input validation	✅
-Responsive mobile/desktop UI	✅
-Survey design mockup (Figma)	✅
-Send survey data to /api/survey	✅
-Save user progress with cookies/storage	✅
+Free domain with SSL	
+Redirect /google	
+GitHub repo setup	
+GitHub Actions deploy to VPS	
+Frontend input validation	
+Responsive mobile/desktop UI	
+Survey design mockup (Figma)	
+Send survey data to /api/survey	
+Save user progress with cookies/storage	
 
 ---
 
 ## Additional Enhancements
 
-✅ Phone input auto-formats to US standard: (123) 456-7890
+ Phone input auto-formats to US standard: (123) 456-7890
 
-✅ Admin can filter + export responses
+ Admin can filter + export responses
 
-✅ Chart included to show distribution
+ Chart included to show distribution
 
-✅ Progress bar persists and animates across steps
+ Progress bar persists and animates across steps
 
 ---
 
@@ -146,7 +146,7 @@ Thank you for reviewing this project!
 
 ---
 
-## 🎨 Figma Design
+##  Figma Design
 
 This project was initially planned and designed in [Figma](https://www.figma.com/design/qsA63h362XvzsMWFzR2oRD/Survey_project?node-id=0-1&t=Hlgs6kyTnsFm46ws-1).
 
